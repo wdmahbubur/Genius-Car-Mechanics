@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
+
 import Service from '../Service/Service';
 import './Services.css';
-
+const axios = require('axios');
 const Services = () => {
     const [services, setServices] = useState([])
     useEffect(() => {
-        fetch('services.json')
-            .then(res => res.json())
-            .then(data => setServices(data));
-    }, [])
+        axios.get('http://localhost:5000/services')
+            .then(function (response) {
+                setServices(response.data);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+    }
+        , [])
 
     return (
         <div id="services">
@@ -16,7 +23,7 @@ const Services = () => {
             <div className="service-container">
                 {
                     services.map(service => <Service
-                        key={service.id}
+                        key={service._id}
                         service={service}
                     ></Service>)
                 }
